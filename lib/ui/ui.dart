@@ -38,4 +38,5 @@ part 'plugins.dart';
 part 'pointer.dart';
 part 'semantics.dart';
 part 'text.dart';
+part 'wd_ext_api.dart';
 part 'window.dart';
