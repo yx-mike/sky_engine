@@ -23,6 +23,15 @@ class WDExtApi {
     return _queryAllIsolateMemory();
   }
 
+  /// 像vm service一样，在main isolate执行垃圾回收.
+  /// 暂时只支持iOS
+  static void fullGC() {
+    _fullGCMainIsolate();
+  }
+
   static String _queryMainIsolateMemory() native 'WDEXTAPI_SQueryMainIsolateMemory';
+
   static String _queryAllIsolateMemory() native 'WDEXTAPI_SQueryAllIsolateMemory';
+
+  static bool _fullGCMainIsolate() native 'WDEXTAPI_SFullGCMainIsolate';
 }
