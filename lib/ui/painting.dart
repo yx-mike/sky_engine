@@ -5211,6 +5211,21 @@ class ImmutableBuffer extends NativeFieldWrapperClass1 {
   }
   void _init(Uint8List list, _Callback<void> callback) native 'ImmutableBuffer_init';
 
+  /// Creates a copy of the data from a [Uint8List] suitable for internal use
+  /// in the engine.
+  /// [copyData], 0表示不需要拷贝Uint8List，其他则需要
+  static Future<ImmutableBuffer> iosFromUint8List(Uint8List list, {
+    bool useCopy = true,
+  }) {
+    assert(useCopy != null);
+
+    final ImmutableBuffer instance = ImmutableBuffer._(list.length);
+    return _futurize((_Callback<void> callback) {
+      instance._iosInit(list, useCopy, callback);
+    }).then((_) => instance);
+  }
+  void _iosInit(Uint8List list, bool useCopy, _Callback<void> callback) native 'ImmutableBuffer_iosInit';
+
   /// The length, in bytes, of the underlying data.
   final int length;
 
