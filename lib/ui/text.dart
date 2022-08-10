@@ -2129,7 +2129,7 @@ Int32List _encodeParagraphStyle(
     result[0] |= 1 << 12;
     // Passed separately to native.
   }
-  if (iosTextVerticalCenter != null) {
+  if (iosTextVerticalCenter ?? false) {
     result[0] |= 1 << 13;
     // Passed separately to native.
   }
