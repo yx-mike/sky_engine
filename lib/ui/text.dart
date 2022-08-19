@@ -2044,6 +2044,42 @@ class TextStyle {
   }
 }
 
+Int32List _encodeParagraphStyleIOS(
+    TextAlign? textAlign,
+    TextDirection? textDirection,
+    int? maxLines,
+    String? fontFamily,
+    double? fontSize,
+    double? height,
+    TextHeightBehavior? textHeightBehavior,
+    FontWeight? fontWeight,
+    FontStyle? fontStyle,
+    StrutStyle? strutStyle,
+    String? ellipsis,
+    Locale? locale,
+    bool? iosTextVerticalCenter,
+    ) {
+  final Int32List result = _encodeParagraphStyle(
+    textAlign,
+    textDirection,
+    maxLines,
+    fontFamily,
+    fontSize,
+    height,
+    textHeightBehavior,
+    fontWeight,
+    fontStyle,
+    strutStyle,
+    ellipsis,
+    locale,
+  );
+  if (iosTextVerticalCenter ?? false) {
+    result[0] |= 1 << 13;
+    // Passed separately to native.
+  }
+  return result;
+}
+
 // This encoding must match the C++ version ParagraphBuilder::build.
 //
 // The encoded array buffer has 6 elements.
@@ -2078,7 +2114,6 @@ Int32List _encodeParagraphStyle(
   StrutStyle? strutStyle,
   String? ellipsis,
   Locale? locale,
-  bool? iosTextVerticalCenter,
 ) {
   final Int32List result = Int32List(7); // also update paragraph_builder.cc
   if (textAlign != null) {
@@ -2127,10 +2162,6 @@ Int32List _encodeParagraphStyle(
   }
   if (locale != null) {
     result[0] |= 1 << 12;
-    // Passed separately to native.
-  }
-  if (iosTextVerticalCenter ?? false) {
-    result[0] |= 1 << 13;
     // Passed separately to native.
   }
   return result;
@@ -2212,7 +2243,6 @@ class ParagraphStyle {
     StrutStyle? strutStyle,
     String? ellipsis,
     Locale? locale,
-    bool? iosTextVerticalCenter,
   }) : _encoded = _encodeParagraphStyle(
          textAlign,
          textDirection,
@@ -2226,7 +2256,6 @@ class ParagraphStyle {
          strutStyle,
          ellipsis,
          locale,
-         iosTextVerticalCenter,
        ),
        _fontFamily = fontFamily,
        _fontSize = fontSize,
@@ -2235,7 +2264,48 @@ class ParagraphStyle {
        _ellipsis = ellipsis,
        _locale = locale,
        _leadingDistribution = textHeightBehavior?.leadingDistribution ?? TextLeadingDistribution.proportional,
-       _iosTextVerticalCenter = iosTextVerticalCenter;
+       _iosTextVerticalCenter = false;
+
+
+  /// 还是单独写个方法吧，在原有ParagraphStyle构造方法上修改，Android本地debug始终报错，我
+  /// 也没有找到原有
+  ParagraphStyle.ios({
+    TextAlign? textAlign,
+    TextDirection? textDirection,
+    int? maxLines,
+    String? fontFamily,
+    double? fontSize,
+    double? height,
+    TextHeightBehavior? textHeightBehavior,
+    FontWeight? fontWeight,
+    FontStyle? fontStyle,
+    StrutStyle? strutStyle,
+    String? ellipsis,
+    Locale? locale,
+    bool? iosTextVerticalCenter,
+  }) : _encoded = _encodeParagraphStyleIOS(
+          textAlign,
+          textDirection,
+          maxLines,
+          fontFamily,
+          fontSize,
+          height,
+          textHeightBehavior,
+          fontWeight,
+          fontStyle,
+          strutStyle,
+          ellipsis,
+          locale,
+          iosTextVerticalCenter,
+        ),
+        _fontFamily = fontFamily,
+        _fontSize = fontSize,
+        _height = height,
+        _strutStyle = strutStyle,
+        _ellipsis = ellipsis,
+        _locale = locale,
+        _leadingDistribution = textHeightBehavior?.leadingDistribution ?? TextLeadingDistribution.proportional,
+        _iosTextVerticalCenter = iosTextVerticalCenter;
 
   final Int32List _encoded;
   final String? _fontFamily;
