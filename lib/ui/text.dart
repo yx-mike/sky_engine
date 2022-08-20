@@ -3439,6 +3439,9 @@ class ParagraphBuilder extends NativeFieldWrapperClass1 {
   /// in effect.
   void pop() native 'ParagraphBuilder_pop';
 
+  /// 强制文本垂直居中
+  void forceVerticalCenter() native 'ParagraphBuilder_forceVerticalCenter';
+
   /// Adds the given text to the paragraph.
   ///
   /// The text will be styled according to the current stack of text styles.
