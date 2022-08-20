@@ -2134,48 +2134,6 @@ Int32List _encodeParagraphStyle(
 /// An opaque object that determines the configuration used by
 /// [ParagraphBuilder] to position lines within a [Paragraph] of text.
 class ParagraphStyle {
-
-  static ParagraphStyle createParagraphStyleIOS({
-    TextAlign? textAlign,
-    TextDirection? textDirection,
-    int? maxLines,
-    String? fontFamily,
-    double? fontSize,
-    double? height,
-    TextHeightBehavior? textHeightBehavior,
-    FontWeight? fontWeight,
-    FontStyle? fontStyle,
-    StrutStyle? strutStyle,
-    String? ellipsis,
-    Locale? locale,
-    bool? iosTextVerticalCenter,
-  }){
-    ParagraphStyle paragraphStyle = ParagraphStyle(
-      textAlign: textAlign,
-      textDirection: textDirection,
-      maxLines: maxLines,
-      fontFamily: fontFamily,
-      fontSize: fontSize,
-      height: height,
-      textHeightBehavior: textHeightBehavior,
-      fontWeight: fontWeight,
-      fontStyle: fontStyle,
-      strutStyle: strutStyle,
-      ellipsis: ellipsis,
-      locale: locale,
-    );
-
-    final Int32List result = paragraphStyle._encoded;
-    if (iosTextVerticalCenter ?? false) {
-      result[0] |= 1 << 13;
-      // Passed separately to native.
-
-      paragraphStyle._encoded = result;
-    }
-
-    return paragraphStyle;
-  }
-
   /// Creates a new ParagraphStyle object.
   ///
   /// * `textAlign`: The alignment of the text within the lines of the
@@ -2235,7 +2193,6 @@ class ParagraphStyle {
   ///   considered equivalent and turn off this behavior.
   ///
   /// * `locale`: The locale used to select region-specific glyphs.
-  /// * `iosTextVerticalCenter:` 使用引擎内部的修改，使得iOS文本垂直居中.
   ParagraphStyle({
     TextAlign? textAlign,
     TextDirection? textDirection,
@@ -2271,8 +2228,7 @@ class ParagraphStyle {
        _locale = locale,
        _leadingDistribution = textHeightBehavior?.leadingDistribution ?? TextLeadingDistribution.proportional;
 
-  Int32List _encoded;
-  // final Int32List _encoded;
+  final Int32List _encoded;
   final String? _fontFamily;
   final double? _fontSize;
   final double? _height;
