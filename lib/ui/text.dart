@@ -2263,8 +2263,7 @@ class ParagraphStyle {
        _strutStyle = strutStyle,
        _ellipsis = ellipsis,
        _locale = locale,
-       _leadingDistribution = textHeightBehavior?.leadingDistribution ?? TextLeadingDistribution.proportional,
-       _iosTextVerticalCenter = false;
+       _leadingDistribution = textHeightBehavior?.leadingDistribution ?? TextLeadingDistribution.proportional;
 
 
   /// 还是单独写个方法吧，在原有ParagraphStyle构造方法上修改，Android本地debug始终报错，我
@@ -2304,8 +2303,7 @@ class ParagraphStyle {
         _strutStyle = strutStyle,
         _ellipsis = ellipsis,
         _locale = locale,
-        _leadingDistribution = textHeightBehavior?.leadingDistribution ?? TextLeadingDistribution.proportional,
-        _iosTextVerticalCenter = iosTextVerticalCenter;
+        _leadingDistribution = textHeightBehavior?.leadingDistribution ?? TextLeadingDistribution.proportional;
 
   final Int32List _encoded;
   final String? _fontFamily;
@@ -2315,7 +2313,6 @@ class ParagraphStyle {
   final String? _ellipsis;
   final Locale? _locale;
   final TextLeadingDistribution _leadingDistribution;
-  final bool? _iosTextVerticalCenter;
 
   @override
   bool operator ==(Object other) {
@@ -2331,12 +2328,11 @@ class ParagraphStyle {
         && other._ellipsis == _ellipsis
         && other._locale == _locale
         && other._leadingDistribution == _leadingDistribution
-        && other._iosTextVerticalCenter == _iosTextVerticalCenter
         && _listEquals<int>(other._encoded, _encoded);
   }
 
   @override
-  int get hashCode => hashValues(hashList(_encoded), _fontFamily, _fontSize, _height, _ellipsis, _locale, _leadingDistribution, _iosTextVerticalCenter);
+  int get hashCode => hashValues(hashList(_encoded), _fontFamily, _fontSize, _height, _ellipsis, _locale, _leadingDistribution);
 
   @override
   String toString() {
@@ -2353,8 +2349,7 @@ class ParagraphStyle {
              'fontSize: ${      _encoded[0] & 0x100 == 0x100 ? _fontSize                         : "unspecified"}, '
              'height: ${        _encoded[0] & 0x200 == 0x200 ? "${_height}x"                     : "unspecified"}, '
              'ellipsis: ${      _encoded[0] & 0x400 == 0x400 ? "\"$_ellipsis\""                  : "unspecified"}, '
-             'locale: ${        _encoded[0] & 0x800 == 0x800 ? _locale                           : "unspecified"}, '
-             'iosTextVerticalCenter: ${_encoded[0] & 0x1000 == 0x1000 ? _iosTextVerticalCenter   : "unspecified"}'
+             'locale: ${        _encoded[0] & 0x800 == 0x800 ? _locale                           : "unspecified"}'
            ')';
   }
 }
