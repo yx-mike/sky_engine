@@ -2228,16 +2228,7 @@ class ParagraphStyle {
        _locale = locale,
        _leadingDistribution = textHeightBehavior?.leadingDistribution ?? TextLeadingDistribution.proportional;
 
-  void updateVerticalCenter() {
-    /// engine-2.5.1/src/flutter/lib/ui/text/paragraph_builder.cc
-    /// const int psIosTextVerticalCenterIndex = 13;
-    _encoded[0] |= 1 << 13;
-  }
-
-  /// 去掉final
-  Int32List _encoded;
-
-  // final Int32List _encoded;
+  final Int32List _encoded;
   final String? _fontFamily;
   final double? _fontSize;
   final double? _height;
